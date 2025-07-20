@@ -1,1 +1,1 @@
-{"root":["./src/index.ts"],"version":"5.8.3"}
+{"root":["./src/index.ts","./src/config/db.config.ts","./src/config/gemini.ts","./src/config/github.ts","./src/config/pinecone.ts","./src/controllers/chatcontroller.ts","./src/controllers/projectcontroller.ts","./src/controllers/readmecontroller.ts","./src/controllers/syncontroller.ts","./src/routes/chatroute.ts","./src/routes/index.ts","./src/routes/projectroute.ts","./src/routes/readmeroute.ts","./src/routes/syncroute.ts","./src/services/genaiservice.ts","./src/services/githubservice.ts"],"errors":true,"version":"5.8.3"}

@@ -1,5 +1,6 @@
 import prisma from "../config/db.config";
 import ai from "../config/gemini";
+
 export const generateContext = async (repoData: any) => {
   const pageContent = repoData.pagecontent
     ? JSON.stringify(repoData.pagecontent).slice(0, 150)
@@ -56,11 +57,30 @@ ${aggregatedContexts}
 - Contributing section
 - License (just say "MIT License" if not found)
 
-Format the README in clean, readable markdown. Only output the final README content.
+Format the README in clean, readable markdown. Only output the final README content.Dont add any additional text or comments.Only the code block with the markdown content is required. Do not include any other text or comments.
 `;
   const readmeContent = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: prompt,
   });
   return readmeContent.text;
+};
+export const generateEmbeddings = async (summary: string) => {
+  const embeddings = await Promise.all(
+    [summary].map(async (text) => {
+      const response = await ai.models.embedContent({
+        model: "gemini-embedding-001",
+        contents: text,
+      });
+      return response.embeddings;
+    })
+  );
+  // console.log("Generated embeddings:", embeddings[0]?.values);
+  // if (embeddings.length === 0 || !Array.isArray(embeddings[0]?.values)) {
+  //   throw new Error("No embeddings generated");
+  // }
+  if (!embeddings[0] || !embeddings[0][0]) {
+    throw new Error("No embeddings generated");
+  }
+  return embeddings[0][0].values;
 };
