@@ -1,5 +1,6 @@
 import prisma from "../config/db.config";
 import ai from "../config/gemini";
+import { generateContextWithJuggler } from "./apiJuggler";
 
 export const generateContext = async (repoData: any) => {
   const pageContent = repoData.pagecontent
@@ -15,12 +16,13 @@ ${pageContent}.
 Analyze the project data and generate a concise summary of the project not more than 100 words.
 `;
 
-  const context = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
-  console.log("Generated context:", context.text);
-  return context.text;
+  // const context = await ai.models.generateContent({
+  //   model: "gemini-2.5-flash",
+  //   contents: prompt,
+  // });
+  const context=await generateContextWithJuggler(prompt);
+  console.log("Generated context:", context);
+  return context;
 };
 export const generateReadmeCode = async (projectId: string) => {
   const project = await prisma.project.findUnique({
